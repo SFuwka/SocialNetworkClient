@@ -1,58 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import './App.css';
+import { BrowserRouter as Router } from "react-router-dom";
+import Content from './components/Content/Content';
+import SideNavbar from './components/Sidebar/SideNavbar/SideNavbar';
+import Header from './components/Header/Header';
+import { Grid } from '@material-ui/core';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
+    <Router>
+      <div className='app-wraper'>
+        <Grid container direction='column' >
+          <Grid item xs={12} >
+            <Header />
+          </Grid>
+          <Grid item container direction='row'>
+            <Grid item xs={false} md={2}></Grid>
+            <Grid item >
+              <SideNavbar />
+            </Grid>
+            <Grid item md={7} xs={12}><Content /></Grid>
+          </Grid>
+        </Grid>
+
+      </div>
+    </Router>
+  )
 }
 
 export default App;

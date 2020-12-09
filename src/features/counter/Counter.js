@@ -6,17 +6,20 @@ import {
   incrementByAmount,
   incrementAsync,
   selectCount,
+  selectColor,
+  toggleColor,
 } from './counterSlice';
 import styles from './Counter.module.css';
 
 export function Counter() {
   const count = useSelector(selectCount);
+  const clicked = useSelector(selectColor)
   const dispatch = useDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
 
   return (
     <div>
-      <div className={styles.row}>
+      <div style={{ backgroundColor: clicked }} className={styles.row}>
         <button
           className={styles.button}
           aria-label="Increment value"
@@ -24,7 +27,7 @@ export function Counter() {
         >
           +
         </button>
-        <span className={styles.value}>{count}</span>
+        <span className={`${styles.value} ${clicked ? styles.clicked : ''}`}>{count}</span>
         <button
           className={styles.button}
           aria-label="Decrement value"
@@ -54,6 +57,9 @@ export function Counter() {
         >
           Add Async
         </button>
+        <button className={`${styles.value} ${clicked ? styles.clicked : ''}`}
+          onClick={() => dispatch(toggleColor('#34c924'))}
+        >Click</button>
       </div>
     </div>
   );
