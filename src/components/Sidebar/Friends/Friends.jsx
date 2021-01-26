@@ -6,9 +6,6 @@ const Friends = (props) => {
   return (
     <Grid container direction={"row"}>
       <Grid item>
-        <ListItemAvatar>
-            <Avatar></Avatar>
-        </ListItemAvatar>
       </Grid>
     </Grid>
   );

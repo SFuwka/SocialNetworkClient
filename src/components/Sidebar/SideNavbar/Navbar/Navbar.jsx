@@ -1,30 +1,53 @@
-import { List, ListItem } from "@material-ui/core";
+import { List, ListItem, Typography } from "@material-ui/core";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { setSideBar } from "../../../../features/navigation/navigationSlice";
 import styles from "./Navbar.module.css";
 
-
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const closeSidebar = () => dispatch(setSideBar(false));
   return (
     <List>
-      <NavLink  activeClassName={styles.active} className={styles.navlink} to={"/profile"}>
+      <NavLink
+        onClick={closeSidebar}
+        activeClassName={styles.active}
+        className={styles.navlink}
+        to={"/"}
+      >
         <ListItem divider button>
-          Profile
+          <Typography color="textPrimary">Profile</Typography>
         </ListItem>
       </NavLink>
-      <NavLink  activeClassName={styles.active} className={styles.navlink} to={"/dialogs"}>
+      <NavLink
+        onClick={closeSidebar}
+        activeClassName={styles.active}
+        className={styles.navlink}
+        to={"/dialogs"}
+      >
         <ListItem divider button>
-          Dialogs
+          <Typography color="textPrimary">Dialogs</Typography>
         </ListItem>
       </NavLink>
-      <NavLink  activeClassName={styles.active} className={styles.navlink} to={"/friends"}>
+      <NavLink
+        onClick={closeSidebar}
+        activeClassName={styles.active}
+        className={styles.navlink}
+        to={"/friends"}
+      >
         <ListItem divider button>
-          Friends
+          <Typography color="textPrimary">Friends</Typography>
         </ListItem>
       </NavLink>
-      <NavLink  activeClassName={styles.active} className={styles.navlink} to={"/findusers"}>
-        <ListItem divider button>
-          People
+      <NavLink
+        onClick={closeSidebar}
+        activeClassName={styles.active}
+        className={styles.navlink}
+        to={"/findusers"}
+      >
+        <ListItem button>
+          <Typography color="textPrimary">People</Typography>
         </ListItem>
       </NavLink>
     </List>

@@ -17,7 +17,6 @@ const SideNavbar = () => {
         dispatch(setSideBar(false))
     }
     useEffect(() => {
-        console.count('useEffect')
         if (upMD) {
             setSideBarClassName(`${classes.menu}`)
         } else {
@@ -35,9 +34,6 @@ const SideNavbar = () => {
             <Paper className={sideBarClassName}>
                 <Grid item >
                     <Navbar />
-                </Grid>
-                <Grid item >
-                    <Friends />
                 </Grid>
             </Paper>
             {upMD ? null : <Backdrop className={classes.backdrop} open={sideBarOpen} onClick={handleClose}></Backdrop>}

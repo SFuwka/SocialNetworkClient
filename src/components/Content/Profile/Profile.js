@@ -1,28 +1,30 @@
-import { Box, Card, Grid, Typography } from '@material-ui/core'
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getUser, currentUser } from '../../../features/users/usersSlice'
+import React from 'react'
+import { Avatar, Card, CardHeader, Container, Grid } from '@material-ui/core'
+import SubscribeButton from '../../Common/SubscribeButton'
+import { useSelector } from 'react-redux'
+import { isAuthorized } from '../../../features/auth/authSlice'
+import ProfileInfo from './ProfileInfo'
 
-const Profile = (props) => {
-    const userId = props.match.params.userId
-    const dispatch = useDispatch()
-    let profile = useSelector(currentUser)
-    console.log(profile, 'CURRENT')
-    useEffect(() => {
-        console.count('profile Use effect')
-        dispatch(getUser(userId))
-    }, [dispatch, userId])
+const Profile = ({ profile, classes, userId }) => {
+    const isAuth = useSelector(isAuthorized)
+    console.count('Profile')
+    return (
+        <Container>
+            <Grid container>
+                <Grid item >
+                    <Card className={classes.card}>
+                        <Avatar className={classes.avatar} variant='rounded' src={profile.ava_small}>
+                            {`${profile.name ? profile.name[0] : ''}${profile.surname ? profile.surname[0] : ''}`}
+                        </Avatar>
+                        {isAuth && <SubscribeButton id={profile._id} />}
+                    </Card>
+                </Grid>
+                <ProfileInfo profile={profile} />
+            </Grid>
 
-  
-
-    return <Grid container>
-        <Grid item>
-            <Card>
-                <Typography>{profile.name}</Typography>
-                <Typography>{profile.surname}</Typography>
-            </Card>
-        </Grid>
-    </Grid>
+        </Container>
+    )
 }
+
 
 export default Profile

@@ -1,0 +1,13 @@
+.app-wraper a {
+  text-decoration: none;
+  color: #e65100;
+}
+
+.app-wraper{
+  height: 100vh;
+}
+
+.contentContainer {
+  height: 90vh;
+  overflow-y: auto;
+}
