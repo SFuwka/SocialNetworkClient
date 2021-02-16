@@ -6,23 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { following, followingProgress, subscribe, unSubscribe } from '../../features/subscription/subscriptionSlice';
 
 
-const SubscribeButton = (props) => {
+const SubscribeButton = ({ userId }) => {
     const dispatch = useDispatch()
     const listOfFollowing = useSelector(following)
-    const isFollowing = listOfFollowing.includes(props.id)
+    const isFollowing = listOfFollowing.includes(userId)
     const followingInProgress = useSelector(followingProgress)
-
     const toggleFollow = () => {
         if (!isFollowing) {
-            dispatch(subscribe(props.id))
+            dispatch(subscribe(userId))
         } else {
-            dispatch(unSubscribe(props.id))
+            dispatch(unSubscribe(userId))
         }
     }
     return (
-        <IconButton style={{ margin: 'auto', display: 'block' }} disabled={followingInProgress.some(id => id === props.id)} onClick={toggleFollow}>
-            {isFollowing ? <RemoveCircleIcon fontSize='large' /> : <AddCircleIcon fontSize='large' color='primary' />}
-        </IconButton>
+        <>
+            {userId && <IconButton style={{ margin: 'auto', display: 'block' }} disabled={followingInProgress.some(id => id === userId)} onClick={toggleFollow}>
+                {isFollowing ? <RemoveCircleIcon fontSize='large' /> : <AddCircleIcon fontSize='large' color='primary' />}
+            </IconButton>}
+        </>
     )
 }
 

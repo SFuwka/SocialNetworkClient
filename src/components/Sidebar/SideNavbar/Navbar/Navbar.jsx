@@ -14,7 +14,7 @@ const Navbar = () => {
         onClick={closeSidebar}
         activeClassName={styles.active}
         className={styles.navlink}
-        to={"/"}
+        exact to={"/"}
       >
         <ListItem divider button>
           <Typography color="textPrimary">Profile</Typography>

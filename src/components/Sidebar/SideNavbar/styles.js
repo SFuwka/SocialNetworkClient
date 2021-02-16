@@ -5,7 +5,7 @@ const MENU_WIDTH = 240
 
 export const useStyles = makeStyles({
     menu: {
-        marginTop: 12,
+        marginTop: 16,
         width: MENU_WIDTH,
         zIndex: 1001,
 

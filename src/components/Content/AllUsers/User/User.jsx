@@ -1,10 +1,7 @@
 import {
   Avatar,
-  Card,
-  CardContent,
   CardHeader,
   Divider,
-  IconButton,
   Tooltip,
   Typography,
 } from "@material-ui/core";
@@ -48,7 +45,7 @@ const User = ({
           </NavLink>
         }
         action={
-          isAuth && <SubscribeButton id={_id} isFollowing={isFollowing} />
+          isAuth && <SubscribeButton userId={_id} isFollowing={isFollowing} />
         }
         title={
           <Typography>
@@ -61,7 +58,7 @@ const User = ({
                 </>
               }
             >
-              <InfoIcon style={{margin: 'auto'}} color="primary" />
+              <InfoIcon style={{ margin: "auto" }} color="primary" />
             </Tooltip>
           </Typography>
         }

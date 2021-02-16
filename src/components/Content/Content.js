@@ -3,16 +3,13 @@ import { Route } from 'react-router-dom'
 import AllUsers from './AllUsers/AllUsers'
 import Dialogs from './Dialogs/Dialogs'
 import Friends from './Friends/Friends'
-import Login from './Auth/Login/Login'
-import ProfileContainer from './Profile/ProfileContainer'
-import SignUp from './Auth/SignUp/SignUp'
-import MyProfile from './MyProfile/MyProfile'
+import Login from './Auth/Login/LoginCopy'
+import SignUp from './Auth/SignUp/SignUpCopy'
 import { useDispatch, useSelector } from 'react-redux'
 import { authMe, isAuthorized, isFetching, loginOrSignUpProgress } from '../../features/auth/authSlice'
 import { CircularProgress } from '@material-ui/core'
 import { getListOfFollowing, following } from '../../features/subscription/subscriptionSlice'
-
-
+import ProfileContainer from './Profile/ProfileContainer'
 
 
 const Content = () => {
@@ -23,14 +20,15 @@ const Content = () => {
         console.count('CONTENTUSEEFFECT')
         if (!isAuth) {
             dispatch(authMe())
+        } else{
+            dispatch(getListOfFollowing())
         }
-        dispatch(getListOfFollowing())
     }, [dispatch, isAuth])
 
     const followingIDs = useSelector(following)
     const pending = useSelector(isFetching)
     const loginOrSignUpPending = useSelector(loginOrSignUpProgress)
-    const listOfFollowing = useSelector(following)
+
 
 
     if (pending && !loginOrSignUpPending) {
@@ -38,13 +36,13 @@ const Content = () => {
     }
 
     return <>
-        <Route path='/findusers' render={() => <AllUsers following={listOfFollowing} />} />
-        <Route path='/dialogs' render={() => <Dialogs a={'as'} />} />
+        <Route path='/findusers' render={() => <AllUsers followingIDs={followingIDs} />} />
+        <Route path='/dialogs' render={() => <Dialogs />} />
         <Route path='/friends' render={() => <Friends />} />
         <Route path='/profile/:userId?' render={() => <ProfileContainer />} />
         <Route path='/login' component={Login} />
         <Route path='/signup' component={SignUp} />
-        <Route exact path='/' render={() => <MyProfile followingIDs={followingIDs} />} />
+        <Route exact path='/' render={() => <ProfileContainer followingIDs={followingIDs} />} />
     </>
 }
 

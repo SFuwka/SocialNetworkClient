@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { setProfileInfo } from '../myProfile/myProfileSlice';
+import { updateProfileInfo } from '../myProfile/myProfileSlice';
 import authApi from './apiCalls'
 
 export const authSlice = createSlice({
@@ -9,7 +9,6 @@ export const authSlice = createSlice({
         isFetching: true, //not sure about it, but it helps to avoid redirect when refresh page 
         loginOrSignUpProgress: false,
         error: '',
-        formData: { name: '', surname: '', email: '', password: '' },
         newAccountCreated: false
     },
     reducers: {
@@ -20,6 +19,9 @@ export const authSlice = createSlice({
         },
         clearError: (state) => {
             state.error = ''
+        },
+        validationError: (state, action) => {
+            state.error = action.payload
         },
         accountCreated: (state) => {
             state.isFetching = false
@@ -43,22 +45,20 @@ export const authSlice = createSlice({
             state.isFetching = false
             state.isAuthorized = false
         },
-        setFormData: (state, action) => {
-            state.formData = action.payload
-        }
+
     },
 });
 
 
-export const { failure, pending, succcess, clearError,
+export const { failure, pending, succcess, validationError, clearError,
     notAuthorized, loginOrSignUpPending, loginOrSignUpStopPending,
-    setFormData, accountCreated } = authSlice.actions;
+     accountCreated } = authSlice.actions;
 
 export const logout = () => (dispatch) => {
     dispatch(pending())
     authApi.logout().then(() => {
         dispatch(notAuthorized())
-        dispatch(setProfileInfo(''))
+        dispatch(updateProfileInfo(''))
     })
 }
 
@@ -66,7 +66,9 @@ export const authMe = () => (dispatch) => {
     dispatch(pending())
     authApi.authMe().then(data => {
         if (data.user) {
-            dispatch(setProfileInfo(data.user))
+            // const theme = localStorage.getItem('theme')
+            // dispatch(setDarkMode(theme === 'false' ? false : true))
+            dispatch(updateProfileInfo(data.user))
             return dispatch(succcess(data.user))
         }
         return dispatch(notAuthorized())
@@ -78,7 +80,7 @@ export const login = (email, password) => (dispatch) => {
     authApi.login(email, password).then(response => {
         console.log(response)
         dispatch(loginOrSignUpStopPending())
-        dispatch(setProfileInfo(response))
+        dispatch(updateProfileInfo(response))
         dispatch(succcess())
     }).catch((error) => {
         dispatch(loginOrSignUpStopPending())
@@ -93,7 +95,6 @@ export const signUp = (name, surname, email, password) => (dispatch) => {
         dispatch(loginOrSignUpStopPending())
         dispatch(accountCreated())
     }).catch((error) => {
-        dispatch(setFormData({ name, surname, email, password }))
         dispatch(loginOrSignUpStopPending())
         dispatch(failure(error.response.data))
     })

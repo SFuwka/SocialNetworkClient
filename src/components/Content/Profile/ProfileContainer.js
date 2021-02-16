@@ -1,31 +1,45 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUser, currentUser, isFetching, pending } from '../../../features/users/usersSlice'
-import { useStyles } from "./styles";
-import ProfilePreloader from './ProfilePreloader'
-import Profile from './Profile';
+import { getUser, currentUser, isFetching } from '../../../features/users/usersSlice'
+import ProfilePreloader from './profile_common/ProfilePreloader'
 import { compose } from '@reduxjs/toolkit';
-import { withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
+import { myProfileInfo } from '../../../features/myProfile/myProfileSlice';
+import Profile from './profile_common/Profile';
+import useAuthRedirect from '../../../hooks/useAuthRedirect'
+import { followingById, getListFollowingsById } from '../../../features/subscription/subscriptionSlice';
 
 
 
-const ProfileContainer = (props) => {
-    console.count('ProfileContainer')
-    const classes = useStyles()
-    const userId = props.match.params.userId
+const ProfileContainer = ({ match, followingIDs }) => {
     const dispatch = useDispatch()
-    let profile = useSelector(currentUser)
-    const process = useSelector(isFetching)
+    const userId = match.params.userId
+    const selectedUser = useSelector(currentUser)
+    const authUser = useSelector(myProfileInfo)
+    const pending = useSelector(isFetching)
+    const listOfUserFollowing = useSelector(followingById)
+    console.log(selectedUser)
+
     useEffect(() => {
-        if (!profile.name && !process) {
-            console.count('DISPATCH USER')
+        if (userId) {
             dispatch(getUser(userId))
+            dispatch(getListFollowingsById(userId))
         }
     }, [dispatch, userId])
 
 
+    if (useAuthRedirect(userId)) {
+        return <Redirect to='/login' />
+    }
+
+
     return <>
-        { process ? <ProfilePreloader /> : <Profile userId={userId} profile={profile} classes={classes} />}
+        {pending && <ProfilePreloader />}
+        {!pending && (
+            (userId && <Profile userId={userId} followingIDs={listOfUserFollowing} profile={selectedUser} authUser={authUser} />)
+            || (!userId && <Profile followingIDs={followingIDs} editable={true} profile={authUser} />)
+        )
+        }
     </>
 }
 

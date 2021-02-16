@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core"
 
 
 export const useStyles = makeStyles((theme) => ({
-    loginForm: {
+    form: {
         marginTop: theme.spacing(2),
         '&>*': {
             display: 'block',
@@ -14,8 +14,6 @@ export const useStyles = makeStyles((theme) => ({
                 paddingRight: 10,
                 color: 'black',
                 backgroundColor: 'white'
-
-
             },
             '& input': {
                 '&:-webkit-autofill': {
@@ -25,6 +23,9 @@ export const useStyles = makeStyles((theme) => ({
             }
         },
 
+    },
+    authFooter:{
+        marginLeft: 16
     },
     buttonWraper: {
         position: 'relative',

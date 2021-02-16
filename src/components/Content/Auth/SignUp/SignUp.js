@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, Redirect } from 'react-router-dom'
 import { authError, isAuthorized, signUp, savedForm, newAccountCreated, loginOrSignUpProgress, clearError } from '../../../../features/auth/authSlice'
-import { useStyles } from "./styles"
+import { useStyles } from "../styles"
 
 const SignUp = () => {
     const classes = useStyles()

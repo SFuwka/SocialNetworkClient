@@ -4,7 +4,7 @@ export const navigationSlice = createSlice({
     name: 'navigation',
     initialState: {
         sidebarOpened: false,
-        darkMode: true,
+        darkMode: localStorage.getItem('theme') === 'false' ? false : true,
     },
     reducers: {
         toggleSidebar: state => {
@@ -14,8 +14,9 @@ export const navigationSlice = createSlice({
             state.sidebarOpened = action.payload
         },
         toggleDarkMode: (state) => {
+            localStorage.setItem('theme', !state.darkMode)
             state.darkMode = !state.darkMode
-        }
+        },
     },
 });
 

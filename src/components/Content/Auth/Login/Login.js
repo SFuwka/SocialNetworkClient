@@ -2,8 +2,8 @@ import { Button, CircularProgress, Container, TextField, Typography } from '@mat
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, Redirect } from 'react-router-dom'
-import { login, authError, isAuthorized, loginOrSignUpProgress, clearError } from '../../../../features/auth/authSlice'
-import { useStyles } from "./styles"
+import { login, authError, isAuthorized, loginOrSignUpProgress, clearError, validationError } from '../../../../features/auth/authSlice'
+import { useStyles } from "../styles"
 
 const Login = () => {
     const classes = useStyles()
@@ -11,7 +11,7 @@ const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' })
     const err = useSelector(authError)
     const progress = useSelector(loginOrSignUpProgress)
-   
+
     const isAuth = useSelector(isAuthorized)
     console.count('Login')
 
@@ -24,6 +24,12 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        if (!formData.email) {
+            return dispatch(validationError({ errType: 'email', message: 'email is required' }))
+        }
+        if (!formData.password) {
+            return dispatch(validationError({ errType: 'password', message: 'password is required' }))
+        }
         dispatch(login(formData.email, formData.password))
     }
 
@@ -37,7 +43,7 @@ const Login = () => {
 
     return (
         <Container className={classes.root}>
-            <form onChange={handleFormChange} className={classes.loginForm}>
+            <form onChange={handleFormChange} className={classes.form}>
                 <TextField
                     autoComplete='email'
                     error={err.errType === 'email'}

@@ -6,6 +6,7 @@ export const subscriptionsSlice = createSlice({
     name: 'subscribtions',
     initialState: {
         following: [],
+        followingById: [],
         followed: [],
         subscribersInfo: [], // delete maybe 
         followingInfo: [],
@@ -36,6 +37,10 @@ export const subscriptionsSlice = createSlice({
             state.following = action.payload
             state.isFetching = false
         },
+        setFollowingByIdList: (state, action) => {
+            state.followingById = action.payload
+            state.isFetching = false
+        },
         setFollowedList: (state, action) => {
             state.followed = action.payload
             state.isFetching = false
@@ -53,14 +58,23 @@ export const subscriptionsSlice = createSlice({
 
 
 export const { pending, stopPending, follow, unFollow, followingInProgress, setFollowingList,
-    setFollowedList, setSubscribersInfo, setFollowingInfo } = subscriptionsSlice.actions;
+    setFollowedList, setFollowingByIdList, setSubscribersInfo, setFollowingInfo } = subscriptionsSlice.actions;
 
 export const getListOfFollowing = () => async (dispatch) => {
     dispatch(pending())
     axios.get(`${process.env.REACT_APP_API_ADRESS}/api/following/`, { withCredentials: true }).then(response => {
         dispatch(setFollowingList(response.data))
     }).catch(error => {
-        console.log(error) // TODO
+        console.log(error) // TODO error handling
+    })
+}
+
+export const getListFollowingsById = (id) => (dispatch) => {
+    dispatch(pending())
+    axios.get(`${process.env.REACT_APP_API_ADRESS}/api/following/${id}`, { withCredentials: true }).then(response => {
+        dispatch(setFollowingByIdList(response.data))
+    }).catch(error => {
+        console.log(error) // TODO error handling
     })
 }
 
@@ -70,7 +84,7 @@ export const getFollowingInfo = (following) => async (dispatch) => {
         axios.post(`${process.env.REACT_APP_API_ADRESS}/api/users`, { usersIDs: following }, { withCredentials: true }).then(response => {
             dispatch(setFollowingInfo(response.data))
         }).catch(error => {
-            console.log(error) //TODO
+            console.log(error) //TODO error handling
         })
     } else {
         dispatch(setFollowingInfo([]))
@@ -79,25 +93,25 @@ export const getFollowingInfo = (following) => async (dispatch) => {
 }
 
 
-export const getSubscribers = (followed) => async (dispatch) => {
+export const getSubscribers = (followed) => (dispatch) => {
     dispatch(pending())
     axios.post(`${process.env.REACT_APP_API_ADRESS}/api/users`, { usersIDs: followed }, { withCredentials: true }).then(response => {
         dispatch(setSubscribersInfo(response.data))
     }).catch(error => {
-        console.log(error) //TODO
+        console.log(error) //TODO error handling
     })
 }
 
-export const getListOfFollowed = () => async (dispatch) => {
+export const getListOfFollowed = () => (dispatch) => {
     dispatch(pending())
     axios.get(`${process.env.REACT_APP_API_ADRESS}/api/followed/`, { withCredentials: true }).then(response => {
         dispatch(setFollowedList(response.data))
     }).catch(error => {
-        console.log(error) // TODO
+        console.log(error) // TODO error handling
     })
 }
 
-export const subscribe = (id) => async (dispatch) => {
+export const subscribe = (id) => (dispatch) => {
     dispatch(pending())
     dispatch(followingInProgress({ isFetching: true, id }))
     axios.post(`${process.env.REACT_APP_API_ADRESS}/api/following/${id}`, {}, { withCredentials: true }).then(response => {
@@ -107,11 +121,11 @@ export const subscribe = (id) => async (dispatch) => {
             dispatch(followingInProgress({ isFetching: false, id }))
         }
     }).catch(error => {
-        console.log(error.response.data) //TODO
+        console.log(error.response.data) //TODO 
     })
 }
 
-export const unSubscribe = (id) => async (dispatch) => {
+export const unSubscribe = (id) => (dispatch) => {
     dispatch(pending())
     dispatch(followingInProgress({ isFetching: true, id }))
     axios.delete(`${process.env.REACT_APP_API_ADRESS}/api/following/${id}`, { withCredentials: true }).then(response => {
@@ -121,7 +135,7 @@ export const unSubscribe = (id) => async (dispatch) => {
             dispatch(followingInProgress({ isFetching: false, id }))
         }
     }).catch(error => {
-        console.log(error.response.data) //TODO
+        console.log(error.response.data) //TODO 
     })
 }
 
@@ -129,6 +143,7 @@ export const unSubscribe = (id) => async (dispatch) => {
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 export const following = state => state.subscribtions.following
+export const followingById = state => state.subscribtions.followingById
 export const followed = state => state.subscribtions.followed
 export const isFetching = state => state.subscribtions.isFetching
 export const followingProgress = state => state.subscribtions.followingProgress

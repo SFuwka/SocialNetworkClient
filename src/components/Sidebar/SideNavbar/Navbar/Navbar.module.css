@@ -1,11 +1,13 @@
-.navlink{
-    text-decoration: none;
-    
+.navlink {
+  text-decoration: none;
 }
 
 .active {
-    display: block;
-    background-color: inherit;
-    font-size: 20px;
+  display: block;
+  background-color: "inherit";
 }
 
+.active p {
+  filter: opacity(60%);
+  font-size: 18px;
+}

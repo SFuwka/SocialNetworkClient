@@ -7,20 +7,32 @@ import Header from './components/Header/Header';
 import { createMuiTheme, Grid, Paper, ThemeProvider } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { darkMode } from './features/navigation/navigationSlice';
-import { useStyles } from './styles';
+
 
 
 function App() {
-  const classes = useStyles()
   const theme = useSelector(darkMode)
-  const currentTheme = createMuiTheme({
+  const dark = createMuiTheme({
     palette: {
-      type: theme ? 'dark' : 'light'
+      type: 'dark',
+      text: {
+        primary: '#ffffff'
+      }
     },
-    background: theme ? '#424242' : '#FFFFFF'
+    background: '#424242'
+  })
+
+  const light = createMuiTheme({
+    palette: {
+      type: 'light',
+      text: {
+        primary: '#000000'
+      }
+    },
+    background: '#ffffff'
   })
   return (
-    <ThemeProvider theme={currentTheme}>
+    <ThemeProvider theme={theme ? dark : light}>
       <Router>
         <Paper elevation={0} square className='app-wraper'>
           <Header />
