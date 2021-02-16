@@ -6,7 +6,7 @@ import { cachedPostsSelector, cachedPostsToSelector } from '../../../features/po
 const PostsList = () => {
     const p = useSelector(cachedPostsSelector)
     const posts = useSelector(cachedPostsToSelector)
-    console.log(posts,p)
+    
 
     return (
         <div>
